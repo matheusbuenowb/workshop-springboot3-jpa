@@ -3,6 +3,8 @@ package com.educandoweb.course.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +23,8 @@ public class Order implements Serializable {
 	@Id //indica que é o primary key (PK)
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //AUTO INCREMENT do SQL, funciona no H2
 	private Long id;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
 	
 	@ManyToOne //indica que é (n, 1), vários pedidos para 1 client
