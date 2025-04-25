@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
@@ -35,6 +38,10 @@ public class Product implements Serializable {
 	private Set<Category> categories = new HashSet<>();
 	//garante que não começe nula, começa então vazia com o hashset
 
+	//Set no lugar do list é para admitir ao JPA que não haja repetições no mesmo item
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<>();
+	
 	public Product () {
 		
 	}
@@ -92,6 +99,16 @@ public class Product implements Serializable {
 	public Set<Category> getCategories() {
 		return categories;
 	}
+	
+	@JsonIgnore
+	public Set<Order> getOrders(){
+		Set<Order> set = new HashSet<>();
+		for(OrderItem x : items) {
+			set.add(x.getOrder());
+		}
+		return set;
+	}
+	
 	
 	//coleções não coloca o set, por isso está apagado o SetCategory
 	
