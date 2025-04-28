@@ -23,4 +23,9 @@ public class UserService {
 		Optional<User> obj = repository.findById(id);
 		return obj.get();
 	}
+	
+	//salva no sgbd um dado usuário, retorna um usuário salvo
+	public User insert(User obj) {
+		return repository.save(obj);
+	}
 }
