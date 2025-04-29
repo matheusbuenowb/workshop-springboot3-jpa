@@ -20,7 +20,7 @@ public class UserService {
 	}
 	
 	public User findById(Long id) {
-		Optional<User> obj = repository.findById(id);
+		Optional<User> obj = repository.findById(id); //traz o objeto do banco de dados
 		return obj.get();
 	}
 	
@@ -31,5 +31,19 @@ public class UserService {
 	
 	public void delete(Long id) {
 		repository.deleteById(id);
+	}
+	
+	public User update(Long id, User obj) {
+		User entity = repository.getReferenceById(id);
+		//prepara o objeto monitorado para modificar e só depois efetuar a operação no banco de dados
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(User entity, User obj) {
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
+		
 	}
 }
